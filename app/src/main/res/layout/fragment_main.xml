@@ -43,6 +43,8 @@
 
         <!--New Register-->
         <TextView
+            android:clickable="true"
+            android:id="@+id/textViewRegister"
             android:textStyle="italic"
             android:layout_marginTop="10dp"
             android:textSize="@dimen/h2"
