@@ -25,6 +25,7 @@
 
         <!--Avata-->
         <ImageView
+            android:scaleType="centerInside"
             android:id="@+id/imageViewAvata"
             android:src="@drawable/avata"
             android:layout_gravity="center"
