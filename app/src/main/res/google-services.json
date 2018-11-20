@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "863416621958",
+    "firebase_url": "https://udrufriend.firebaseio.com",
+    "project_id": "udrufriend",
+    "storage_bucket": "udrufriend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863416621958:android:2be9fbf7e6f4ae3f",
+        "android_client_info": {
+          "package_name": "pberry.udruapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863416621958-b98rl0qftvrhugra0sgh5cv0pbn73dat.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pberry.udruapp",
+            "certificate_hash": "63ccf26842e369a4683cadecc78fe8774e0267b0"
+          }
+        },
+        {
+          "client_id": "863416621958-7tkt3ht8vlt5ce2hfi95albbfmgfujk7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDawywtTtr4IDMFj-GnbJYGV75dn2PS5Co"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863416621958-7tkt3ht8vlt5ce2hfi95albbfmgfujk7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

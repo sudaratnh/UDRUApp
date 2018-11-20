@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class RegisterFragment extends Fragment {
     //    EXplicit
     private Uri uri;
     private  ImageView imageView;
+    private boolean aBoolean = true;
 
 
     @Override
@@ -48,10 +50,55 @@ public class RegisterFragment extends Fragment {
 
         if (item.getItemId() == R.id.itemUpload) {
 
+            checkData();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkData() {
+
+        MyAlert myAlert = new MyAlert(getActivity());
+    //Get Value From EditText to string
+        EditText nameEditText = getView().findViewById(R.id.edtName);
+        EditText emailEditText = getView().findViewById(R.id.edtEmail);
+        EditText passwordEditText = getView().findViewById(R.id.edtPassword);
+        EditText rePasswordEditText = getView().findViewById(R.id.edtRepassword);
+
+        String nameString = nameEditText.getText().toString().trim();
+        String emailString = emailEditText.getText().toString().trim();
+        String passwordString = passwordEditText.getText().toString().trim();
+        String rePasswordString = rePasswordEditText.getText().toString().trim();
+
+
+        if (aBoolean) {
+            myAlert.normalDialog("No Avata", "Please Choose Image for Avata");
+        } else if (checkSpace(nameString, emailString, passwordString, rePasswordString)) {
+            myAlert.normalDialog(getString(R.string.title_have_space), getString(R.string.message_have_space));
+
+        } else if (passwordString.equals(rePasswordString)) {
+
+            uploadTofirebase(nameString, emailString, passwordString);
+        } else {
+            myAlert.normalDialog("Password Not Match","Please type Password again");
+        }
+    }
+
+    private void uploadTofirebase(String nameString, String emailString, String passwordString) {
+
+    }
+
+    private boolean checkSpace(String nameString,
+                               String emailString,
+                               String passwordString,
+                               String rePasswordString) {
+        boolean result = false;
+        if (nameString.isEmpty() || emailString.isEmpty() || passwordString.isEmpty() || rePasswordString.isEmpty()) {
+            result = true;
+        }
+
+        return result;
     }
 
     @Override
@@ -69,6 +116,7 @@ public class RegisterFragment extends Fragment {
         if (resultCode == getActivity().RESULT_OK) {
 
             uri = data.getData();
+            aBoolean = false;
 
             try {
 
