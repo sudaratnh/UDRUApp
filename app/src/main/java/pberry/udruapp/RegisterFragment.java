@@ -22,8 +22,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -93,7 +97,7 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private void uploadToFirebase(final String nameString, String emailString, String passwordString) {
+    private void uploadToFirebase(final String nameString, final String emailString, final String passwordString) {
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setTitle("Please Wait...");
@@ -102,7 +106,7 @@ public class RegisterFragment extends Fragment {
 //        upload Image
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = firebaseStorage.getReference();
-        StorageReference storageReference1 = storageReference.child("Avata/" + nameString);
+        final StorageReference storageReference1 = storageReference.child("Avata/" + nameString);
         storageReference1.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -110,12 +114,16 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getActivity(), "Success Upload", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
 
-                //        Register Email
-                String urlAvata = findURlavata(nameString);
-                Log.d("20novV1", "urlAvata ==> " + urlAvata);
+//                Find Path URL
+                storageReference1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("21NovV1", "PathURL ==>" + uri.toString());
+                        registerFirebase(nameString, emailString, passwordString, uri.toString());
 
 
-
+                    }
+                });
 
 
             }   // onSuccess
@@ -128,36 +136,28 @@ public class RegisterFragment extends Fragment {
         });
 
 
-
-
-
-
     }   // upload
 
-    private String findURlavata(String nameString) {
-
-
-        return myFindURL(nameString);
-    }
-
-    private String myFindURL(String nameString) {
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference();
-
-        final String[] strings = new String[1];
-        storageReference.child("Avata").child(nameString)
-                .getDownloadUrl()
-                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+    private void registerFirebase(String nameString, String emailString, String passwordString, String pathUrlString) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.createUserWithEmailAndPassword(emailString, passwordString)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onSuccess(Uri uri) {
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
 
-                        strings[0] = uri.toString();
-                        return;
+                        } else {
+                            MyAlert myAlert = new MyAlert(getActivity());
+                            myAlert.normalDialog("Cannot Register", task.getException().toString());
 
-                    }
+                        }
+
+                    } //Complete
                 });
-        return strings[0];
-    }
+
+
+    } //register
+
 
     private boolean checkSpace(String nameString,
                                String emailString,
